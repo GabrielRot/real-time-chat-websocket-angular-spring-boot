@@ -2,6 +2,7 @@ package org.chatapp.backend.messageroommember;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.chatapp.backend.messageroom.MessageRoom;
 import org.chatapp.backend.user.User;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message_room_member")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @IdClass(MessageRoomMemberKey.class)
