@@ -2,6 +2,7 @@ package org.chatapp.backend.messagecontent;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.chatapp.backend.messageroom.MessageRoom;
 import org.chatapp.backend.user.User;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "message_content")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -28,7 +30,7 @@ public class MessageContent {
   private LocalDateTime dataSent;
 
   @Enumerated(EnumType.STRING)
-  private MessageType type;
+  private MessageType messageType;
 
   @ManyToOne
   @JoinColumn(name = "message_room_id")

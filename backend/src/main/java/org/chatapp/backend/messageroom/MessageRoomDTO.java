@@ -12,6 +12,6 @@ public class MessageRoomDTO {
   private String name;
   private Boolean isGroup;
   private LocalDateTime createdDate;
-  private UUID createdById;
+  private String createdById;
 
 }
