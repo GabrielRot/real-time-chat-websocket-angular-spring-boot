@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'app/core/interface/user';
 import { UserService } from 'app/core/services/user.service';
+import { ActiveUsersListComponent } from "./active-users-list/active-users-list.component";
 
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [],
+  imports: [ActiveUsersListComponent],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss'
 })
@@ -27,13 +28,13 @@ export class MessagesComponent {
 
     this.userService.connect(this.currentUser);
 
-    this.activeUserSubscription = this.userService.subscribeActiveUsers().subscribe({
-      next: (user: User) => {
-        console.log(user);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
+    window.addEventListener('beforeunload', () => {
+      this.userService.disconnect(this.currentUser);
+    });
   }
+
+  ngOnDestroy() {
+    this.userService.disconnect(this.currentUser); 
+  }
+
 }
