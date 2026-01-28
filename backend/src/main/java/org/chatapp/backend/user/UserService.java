@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +36,40 @@ public class UserService {
                 .lastLogin(LocalDateTime.now())
                 .build();
 
-        return user;
+        return userRepository.save(user);
+    }
+
+    public UserDTO connect(UserDTO userDTO) {
+        Optional<User> user = userRepository.findById(userDTO.getUsername());
+
+        user.ifPresent(u -> {
+            u.setStatus(UserStatus.ONLINE);
+
+            userRepository.save(u);
+        });
+
+        return user.map(u -> userMapper.toDTO(u, new UserDTO())).orElse(null);
+    }
+
+    public List<UserDTO> getOnlineUsers() {
+        return userRepository.findAllByStatus(UserStatus.ONLINE)
+                .stream()
+                .map(u -> userMapper.toDTO(u, new UserDTO()))
+                .toList();
+    }
+
+    public UserDTO logout(final String username) {
+        Optional<User> user = userRepository.findById(username);
+
+        user.ifPresent(u -> {
+            u.setStatus(UserStatus.OFFLINE);
+
+            u.setLastLogin(LocalDateTime.now());
+
+            userRepository.save(u);
+        });
+
+        return user.map(u -> userMapper.toDTO(u, new UserDTO())).orElse(null);
     }
 
 }
